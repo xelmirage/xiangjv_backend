@@ -1,0 +1,240 @@
+<!--index.wxml-->
+<view class="page-body">
+  <view>
+    <map id="myMap" style="width: 100%; height: 100vh;" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" covers="{{covers}}" show-location></map>
+  </view>
+  <!-- 定位 -->
+  <image src='../../image/location.png' mode="widthFix" class="post-left" bindtap="moveToLocation" style='width:10%;' />
+  <!-- 功能 -->
+  <image src='../../image/show.png' mode="widthFix" class="post-right" bindtap="showModal" style='width:10%;' />
+  <!--屏幕背景变暗的背景  -->
+  <view class="commodity_screen" bindtap="hideModal" wx:if="{{showModalStatus||showActiveTypeStatus}}"></view>
+  <!--弹出框  -->
+  <view animation="{{animationData}}" class="commodity_attr_box" wx:if="{{showModalStatus}}">
+
+    <view class='column'>
+      <view class='row'>
+        <image mode="widthFix" style="width:5%;margin:auto 5px; margin-left:20px" src='../../image/addfriend.png' />
+        <text>同行好友</text>
+      </view>
+      <view class='row' style='margin-left:20px'>
+        <image class="icon-image" src='../../image/add.png' />
+        <image class="icon-image" src="../../image/cat1.png" />
+        <image class="icon-image" src="../../image/cat2.png" />
+        <image class="icon-image" src="../../image/cat3.png" />
+      </view>
+      <text class='line'></text>
+    </view>
+
+
+
+
+    <view class='column'>
+      <!-- <view class="section section_gap"> -->
+      <view class='row'>
+        <image mode="widthFix" style="width:5%;margin:auto 6px;margin-left:20px" src='../../image/time.png' />
+        <view> 空闲时段</view>
+      </view>
+      <!-- 时间段 -->
+      <view class="picker_group">
+        <picker mode="time" value="{{time}}" end="{{time2}}" bindchange="bindDateChange">
+          <view class="picker">
+            {{time}}
+          </view>
+        </picker>
+        至
+        <picker mode="time" value="{{time2}}" start="{{time}}" end="24：00" bindchange="bindDateChange2">
+          <view class="picker">
+            {{time2}}
+          </view>
+        </picker>
+      </view>
+      <text class='line'></text>
+
+    </view>
+    <view class='column'>
+      <view class='row'>
+        <image mode="widthFix" style="width:5%;margin:auto 5px;margin-left:20px" src='../../image/position.png' />
+        <text> 活动区间</text>
+      </view>
+      <view class='position_group'>
+        <input class='position' placeholder='聚前位置' value='{{chooseAddressBefore}}' bindtap='onChangeAddressBefore'></input>
+        <text style='margin: auto 2px'> — </text>
+        <input class='position' placeholder='聚后位置' value='{{chooseAddressAfter}}' bindtap='onChangeAddressAfter'></input>
+      </view>
+      <text class='line'></text>
+
+    </view>
+    <view class='row'>
+      <image mode="widthFix" style="width:5%;margin:auto 5px;margin-left:20px" src='../../image/plane.png' />
+      <text> 出行方式</text>
+    </view>
+    <view class="segmentedControl" style='margin-left:20px'>
+      <!-- 循环遍历 -->
+      <block wx:for="{{radioValues}}">
+        <text data-index="{{index}}" bindtap="indexChanged" class="{{clazz[index]}}">{{item.value}}</text>
+      </block>
+    </view>
+    <text class='line'></text>
+
+
+
+
+    <view class='row' style='margin:-17px auto auto'>
+
+      <image mode="widthFix" style="width:5%;margin:auto 5px;margin-left:20px" src='../../image/active.png' />
+      <text bindtap='showActiveType'>活动类型</text>
+      <image mode="widthFix" style="width:3%;margin:auto 5px;" bindtap='showActiveType' src='../../image/right.png' />
+    </view>
+
+    <button class='btn'>完成</button>
+  </view>
+
+
+  <view animation="{{animationData}}" class="commodity_attr_box" wx:if="{{showActiveTypeStatus }}">
+    <view class='row'>
+      <image mode="widthFix" style="width:5%;margin:auto 5px;margin-left:20px" src='../../image/active.png' />
+      <text> 活动类型</text>
+    </view>
+
+    <view class="segmentedControl" style='margin-left:20px'>
+      <!-- 循环遍历 -->
+
+      <view bindtap='clickjvcan'>
+        <text class="{{selsectState[0]?'selected':''}}">聚餐</text>
+      </view>
+      <view bindtap='clickjvwan'>
+        <text class="{{selsectState[1]?'selected':''}}">聚玩</text>
+      </view>
+
+
+
+    </view>
+    <view class="more_container ">
+      <view wx:if="{{selectIndex==0}}">
+
+        <view class="control1">
+
+          <view bindtap='clickjvcan_option' data-jvcan="0">
+            <text class="{{jvcan_option[0]?'selected':''}}">随意</text>
+          </view>
+          <view bindtap='clickjvcan_option' data-jvcan="1">
+            <text class="{{jvcan_option[1]?'selected':''}}">不吃海鲜</text>
+          </view>
+          <view bindtap='clickjvcan_option' data-jvcan="2">
+            <text class="{{jvcan_option[2]?'selected':''}}">不要清淡</text>
+          </view>
+          <view bindtap='clickjvcan_option' data-jvcan="3">
+            <text class="{{jvcan_option[3]?'selected':''}}">不要油炸</text>
+          </view>
+          <view bindtap='clickjvcan_option' data-jvcan="4">
+            <text class="{{jvcan_option[4]?'selected':''}}">不吃只喝</text>
+
+          </view>
+          <view bindtap='clickjvcan_option' data-jvcan="5">
+            <text class="{{jvcan_option[5]?'selected':''}}">不要辣</text>
+          </view>
+        </view>
+
+      </view>
+      <view wx:if="{{selectIndex==1}}">
+        <view class="control1">
+          <view bindtap='clickjvwan_option' data-jvwan="0">
+            <text class="{{jvwan_option[0]?'selected':''}}">KTV</text>
+          </view>
+          <view bindtap='clickjvwan_option' data-jvwan="1">
+            <text class="{{jvwan_option[1]?'selected':''}}">电影</text>
+          </view>
+          <view bindtap='clickjvwan_option' data-jvwan="2">
+            <text class="{{jvwan_option[2]?'selected':''}}">购物</text>
+          </view>
+
+        </view>
+
+
+      </view>
+    </view>
+    <text class='line'></text>
+    <view class='row' style='margin:-10px auto auto'>
+      <image mode="widthFix" style="width:5%;margin:auto 5px;margin-left:20px" src='../../image/type.png' />
+      <text> 商家风格 </text>
+    </view>
+    <view class="segmentedControl " style='margin-left:20px'>
+
+      <view bindtap='clickplace_type' data-place="0">
+        <text class="{{place_type[0]?'selected':''}}">随性</text>
+      </view>
+      <view bindtap='clickplace_type' data-place="1">
+        <text class="{{place_type[1]?'selected':''}}">商务</text>
+      </view>
+      <view bindtap='clickplace_type' data-place="2">
+        <text class="{{place_type[2]?'selected':''}}">传统</text>
+      </view>
+      <view bindtap='clickplace_type' data-place="3">
+        <text class="{{place_type[3]?'selected':''}}">阳光</text>
+      </view>
+      <view bindtap='clickplace_type' data-place="4">
+        <text class="{{place_type[4]?'selected':''}}">情调</text>
+
+      </view>
+      <view bindtap='clickplace_type' data-place="5">
+        <text class="{{place_type[5]?'selected':''}}">潮范</text>
+      </view>
+      <view bindtap='clickplace_type' data-place="6">
+        <text class="{{place_type[6]?'selected':''}}">休闲</text>
+      </view>
+    </view>
+
+    <text class='line'></text>
+    <button bindtap='recommendPOI' class='btn'>完成</button>
+
+  </view>
+
+
+  <view animation="{{animationData}}" class="commodity_attr_box" wx:if="{{showPOIStatus}}">
+    <view class='row'>
+      <image mode="widthFix" style="width:5%;margin:auto 5px;margin-left:20px" src='../../image/active.png' />
+      <text> 巷聚点</text>
+    </view>  
+
+    
+   
+    <view class='column'>
+      
+      <view class='row' style='margin-left:20px'>
+        <image class="icon-image" src='../../image/POI1.jpg' />
+        <view class='column'>
+          <text>第一饭店</text>
+          <text class='poiAddress'>'海淀区中关村大厦1号'</text>
+        </view>
+        
+      </view>
+      <view class='row' style='margin-left:20px'>
+        <image class="icon-image" src='../../image/POI2.jpg' />
+        <view class='column'>
+          <text>第二饭店</text>
+          <text class='poiAddress'>'海淀区中关村大厦2号'</text>
+        </view>        
+      </view>
+      <view class='row' style='margin-left:20px'>
+        <image class="icon-image" src='../../image/POI2.jpg' />
+        <view class='column'>
+          <text>第三饭店</text>
+          <text class='poiAddress'>'海淀区中关村大厦3号'</text>
+        </view>        
+      </view>
+      <view class='row' style='margin-left:20px'>
+        <image class="icon-image" src='../../image/POI2.jpg' />
+        <view class='column'>
+          <text>第四饭店</text>
+          <text class='poiAddress'>'海淀区中关村大厦4号'</text>
+        </view>        
+      </view>
+      
+    </view>
+
+  </view>
+
+
+
+</view>
